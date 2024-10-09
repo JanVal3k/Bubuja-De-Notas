@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BurbujasDeNotas"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Burbuja de Notas Principal" Height="50" Width="50"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        MouseDown="Window_MouseDown"
+        MouseMove="Window_MouseMove"
+        MouseUp="Window_MouseUp">
+    <Border 
+        Background="LightBlue"
+        CornerRadius="20"
+        BorderThickness="2"
+        BorderBrush="DarkBlue">
+        <Grid>
+        </Grid>
+    </Border>
 </Window>
