@@ -1,7 +1,7 @@
-﻿<Application x:Class="Application"
+﻿<Application x:Class="BurbujasDeNotas.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Burbuja_de_Notas"
+             xmlns:local="clr-namespace:BurbujasDeNotas"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

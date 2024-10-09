@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Burbuja-de-Notas", "Burbuja-de-Notas\Burbuja-de-Notas.vbproj", "{D6A7CED8-D853-4069-9447-23FF74440367}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurbujasDeNotas", "BurbujasDeNotas.csproj", "{C8DD9F00-02A6-4AA0-B5D0-ECA4DBA77830}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D6A7CED8-D853-4069-9447-23FF74440367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6A7CED8-D853-4069-9447-23FF74440367}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6A7CED8-D853-4069-9447-23FF74440367}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6A7CED8-D853-4069-9447-23FF74440367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8DD9F00-02A6-4AA0-B5D0-ECA4DBA77830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8DD9F00-02A6-4AA0-B5D0-ECA4DBA77830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8DD9F00-02A6-4AA0-B5D0-ECA4DBA77830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8DD9F00-02A6-4AA0-B5D0-ECA4DBA77830}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0810C0A5-CB0F-48E9-88FB-2B7C28DAEDB6}
+		SolutionGuid = {E67076BE-C745-4AF0-9544-1FAF5BA36270}
 	EndGlobalSection
 EndGlobal
