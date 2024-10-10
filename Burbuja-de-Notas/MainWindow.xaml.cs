@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -8,43 +9,117 @@ namespace BurbujasDeNotas
 {
     public partial class MainWindow : Window
     {
-        private int widgetCount = 0;
-        private bool isDragging = false;
-        private List<SecondaryWidget> secondaryWidgets = new List<SecondaryWidget>();
-        private Point offset;
+        
+        private bool estaArrastrando = false;
+        private Point posicionInicial;
+        private Popup menuEmergente;
 
         public MainWindow()
         {
             InitializeComponent();
+            InicializarMenuEmergente();
         }
 
-        public void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        
+        /// Inicializa el menú emergente (popup) con sus botones y estilos
+        
+        private void InicializarMenuEmergente()
+        {
+            // Crear el popup principal
+            menuEmergente = new Popup
+            {
+                AllowsTransparency = true,
+                PopupAnimation = PopupAnimation.Fade
+            };
+
+            // Crear el borde que contendrá todo el contenido del popup
+            var bordePrincipal = new Border
+            {
+                Background = new SolidColorBrush(Colors.White),
+                CornerRadius = new CornerRadius(15),
+                BorderBrush = new SolidColorBrush(Colors.LightGray),
+                BorderThickness = new Thickness(1),
+                Width = 160,
+                Height = 160,
+                Margin = new Thickness(10) // Espacio entre la burbuja principal y el popup
+            };
+
+            // Agregar sombra al borde para dar efecto de elevación
+            bordePrincipal.Effect = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                BlurRadius = 10,
+                ShadowDepth = 5,
+                Opacity = 0.3
+            };
+
+            // Crear la cuadrícula para organizar los botones
+            var cuadricula = new Grid();
+
+            // Configurar filas y columnas de la cuadrícula
+            for (int i = 0; i < 2; i++)
+            {
+                cuadricula.RowDefinitions.Add(new RowDefinition());
+                cuadricula.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            // Agregar botones a la cuadrícula
+            string[] opcionesMenu = { "📝", "📅", "📷","⚙️" };
+            for (int i = 0; i < 4; i++)
+            {
+                
+                var boton = CrearBotonCircular(opcionesMenu[i]);
+                //se define donde van a ir los botones
+                Grid.SetRow(boton, i / 2);
+                Grid.SetColumn(boton, i % 2);
+                cuadricula.Children.Add(boton);
+            }
+            // unimos todo
+            bordePrincipal.Child = cuadricula;
+            menuEmergente.Child = bordePrincipal;
+        }
+
+        
+        /// Crea un botón circular con el contenido especificado
+        
+        private Button CrearBotonCircular(string contenido)
+        {
+            return new Button
+            {
+                Content = contenido,
+                Width = 60,
+                Height = 60,
+                Margin = new Thickness(5),
+                Style = FindResource("EstiloBotonCircular") as Style
+            };
+        }
+
+        
+        /// Maneja el evento cuando se presiona el botón del mouse
+        
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                isDragging = true;
-                var mousePos = e.GetPosition(this);
-                offset = new Point(mousePos.X, mousePos.Y);
-                this.CaptureMouse();
-
-                if (widgetCount == 0)
+                // Si el menú está abierto, lo cerramos
+                if (menuEmergente.IsOpen)
                 {
-                    widgetCount++;
-                    var newWidget = new SecondaryWidget
-                    {
-                        Title = "Widget Flotante " + widgetCount,
-                        Left = this.Left + this.Width + 10,
-                        Top = this.Top
-                    };
-                    secondaryWidgets.Add(newWidget);
-                    newWidget.Show();
+                    menuEmergente.IsOpen = false;
+                    return;
                 }
+
+                // Iniciamos el arrastre
+                estaArrastrando = true;
+                posicionInicial = e.GetPosition(this);
+                this.CaptureMouse();
             }
         }
 
+        
+        /// Maneja el movimiento del mouse para arrastrar la ventana
+        
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDragging)
+            if (estaArrastrando)
             {
                 if (e.LeftButton == MouseButtonState.Released)
                 {
@@ -52,52 +127,37 @@ namespace BurbujasDeNotas
                     return;
                 }
 
-                // Obtener la posición actual del cursor en coordenadas de pantalla
-                Point currentMousePosition = PointToScreen(e.GetPosition(this));
+                // Calcular la nueva posición de la ventana
+                var posicionActual = e.GetPosition(this);
+                var offset = posicionActual - posicionInicial;
 
-                // Ajustar la posición del widget principal
-                this.Left = currentMousePosition.X - offset.X;
-                this.Top = currentMousePosition.Y - offset.Y;
-
-                // Mover todos los widgets secundarios
-                foreach (var widget in secondaryWidgets)
-                {
-                    widget.Left = this.Left + this.Width + 10;
-                    widget.Top = this.Top;
-                }
+                // Mover la ventana
+                this.Left += offset.X;
+                this.Top += offset.Y;
             }
         }
 
+        
+        /// Maneja cuando se suelta el botón del mouse
+        
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (isDragging)
+            if (estaArrastrando)
             {
-                isDragging = false;
+                estaArrastrando = false;
                 this.ReleaseMouseCapture();
+                MostrarMenuEmergente();
             }
         }
-    }
 
-    public class SecondaryWidget : Window
-    {
-        public SecondaryWidget()
+        
+        /// Muestra el menú emergente al lado de la burbuja principal
+        
+        private void MostrarMenuEmergente()
         {
-            WindowStyle = WindowStyle.None;
-            AllowsTransparency = true;
-            Background = Brushes.Transparent;
-            Topmost = true;
-            Height = 50;
-            Width = 50;
-
-            var border = new Border
-            {
-                Background = Brushes.LightGreen,
-                CornerRadius = new CornerRadius(20),
-                BorderThickness = new Thickness(2),
-                BorderBrush = Brushes.DarkGreen
-            };
-
-            Content = border;
+            menuEmergente.PlacementTarget = this;
+            menuEmergente.Placement = PlacementMode.Right;
+            menuEmergente.IsOpen = true;
         }
     }
 }
