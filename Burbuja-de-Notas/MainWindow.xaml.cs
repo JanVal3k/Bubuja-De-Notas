@@ -76,17 +76,24 @@ namespace BurbujasDeNotas
             menuEmergente.Child = bordePrincipal;     // Añade el borde al popup
         }
 
-        // Método para crear botones circulares
+        // Método para crear botones circulares 
         private Button CrearBotonCircular(string contenido)
         {
-            return new Button
+            // Crear el botón con sus propiedades
+            var boton = new Button
             {
-                Content = contenido,            // Emoji del botón
-                Width = 60,                     // Ancho fijo
-                Height = 60,                    // Alto fijo
-                Margin = new Thickness(5),      // Margen alrededor del botón
-                Style = FindResource("EstiloBotonCircular") as Style  // Aplica estilo definido en XAML
+                Content = contenido,            // El emoji que se mostrará
+                Width = 60,
+                Height = 60,
+                Margin = new Thickness(5),
+                Style = FindResource("EstiloBotonCircular") as Style,
+                Tag = contenido                 // Guardamos el emoji para identificar el botón
             };
+
+            // Agregamos el manejador del clic
+            boton.Click += BotonMenu_Click;
+
+            return boton;
         }
 
         // Manejador del evento MouseDown de la ventana
@@ -147,6 +154,32 @@ namespace BurbujasDeNotas
             menuEmergente.PlacementTarget = this;     // Define la ventana como objetivo del popup
             menuEmergente.Placement = PlacementMode.Right;  // Coloca el popup a la derecha
             menuEmergente.IsOpen = true;              // Muestra el popup
+        }
+        //--------------------
+        
+
+        // Nuevo método para manejar los clics en los botones
+        private void BotonMenu_Click(object sender, RoutedEventArgs e)
+        {
+            // Obtener el botón que fue clickeado
+            var boton = sender as Button;
+
+            // Verificar si es el botón de nota (emoji 📝)
+            if (boton?.Tag.ToString() == "📝")
+            {
+                // Crear nueva ventana de nota
+                var ventanaNota = new NotaWindow();
+
+                // Posicionar la ventana cerca de donde se hizo clic
+                ventanaNota.Left = this.Left + this.Width + menuEmergente.HorizontalOffset;
+                ventanaNota.Top = this.Top;
+
+                // Mostrar la ventana
+                ventanaNota.Show();
+
+                // Cerrar el menú emergente
+                menuEmergente.IsOpen = false;
+            }
         }
     }
 }

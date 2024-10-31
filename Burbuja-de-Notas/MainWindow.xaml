@@ -39,6 +39,38 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <!-- efecto de sombra para las ventanas -->
+        <DropShadowEffect x:Key="SombraEstandar"
+                      BlurRadius="10"         
+            ShadowDepth="5"
+            
+            Opacity="0.3"/>
+            <!-- Transparencia de la sombra -->
+            <!-- Ventana de notas -->
+            <Style x:Key="BotonControlVentana" TargetType="Button">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#444"/>
+            <!-- Efecto al pasar el mouse -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFD700"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <!-- Contenido principal de la ventana (la burbuja) -->
