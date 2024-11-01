@@ -186,7 +186,7 @@ namespace BurbujasDeNotas
 
                 //ahora para cambiamos el estado de NotasAbiertas cuando se cierra
 
-                ventanaNota.Closed += (s, args) => NotasAbiertas = false;
+                ventanaNota.Closed += (s, args) => NotasAbiertas = false; // funcion lambda o de flasha en JS (nota: los argumentos son obligatorios a si no se utilicen)
 
                 // Mostrar la ventana
                 ventanaNota.Show();
