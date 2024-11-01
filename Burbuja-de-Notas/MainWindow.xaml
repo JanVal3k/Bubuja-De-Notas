@@ -14,37 +14,7 @@
         MouseMove="Window_MouseMove"
         MouseUp="Window_MouseUp">
 
-
-    <Window.Resources>
-        <!-- Estilo de los botones -->
-        <Style x:Key="EstiloBotonCircular" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <!-- espesificamos propiedades mas complejas -->
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Ellipse Fill="{TemplateBinding Background}"/>
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                            VerticalAlignment="Center"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background" Value="#F0F0F0"/>
-            <Setter Property="FontSize" Value="20"/>
-            <!-- Animación hover -->
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E0E0E0"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-
-    <!-- Contenido principal de la ventana (la burbuja) -->
-    <Border
-        CornerRadius="25"
-        >
+    <Border CornerRadius="25">
         <Border.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FF115F79"/>
