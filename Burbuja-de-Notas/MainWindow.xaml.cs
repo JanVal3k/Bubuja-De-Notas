@@ -13,6 +13,8 @@ namespace BurbujasDeNotas
         private bool estaArrastrando = false;   // Controla si la ventana está siendo arrastrada
         private Point posicionInicial;          // Almacena la posición inicial del mouse al arrastrar
         private Popup menuEmergente;            // El menú popup que aparece al soltar el mouse
+        private NotaWindow ventanaNota;         // nueva entana para las notas
+        private bool NotasAbiertas = false;     // para controlar si esta abierta o no las notas
 
         // Constructor de la clase
         public MainWindow()
@@ -91,9 +93,11 @@ namespace BurbujasDeNotas
             };
 
             // Agregamos el manejador del clic
-            boton.Click += BotonMenu_Click;
-
+            
+                boton.Click += BotonMenu_Click;
+                
             return boton;
+            
         }
 
         // Manejador del evento MouseDown de la ventana
@@ -152,7 +156,7 @@ namespace BurbujasDeNotas
         private void MostrarMenuEmergente()
         {
             menuEmergente.PlacementTarget = this;     // Define la ventana como objetivo del popup
-            menuEmergente.Placement = PlacementMode.Right;  // Coloca el popup a la derecha
+            menuEmergente.Placement = PlacementMode.Top;  // Coloca el popup a la derecha
             menuEmergente.IsOpen = true;              // Muestra el popup
         }
         //--------------------
@@ -167,16 +171,26 @@ namespace BurbujasDeNotas
             // Verificar si es el botón de nota (emoji 📝)
             if (boton?.Tag.ToString() == "📝")
             {
+                if (NotasAbiertas)
+                {
+                    return;
+                }
                 // Crear nueva ventana de nota
-                var ventanaNota = new NotaWindow();
+                ventanaNota = new NotaWindow();
+
+                NotasAbiertas = true;
 
                 // Posicionar la ventana cerca de donde se hizo clic
                 ventanaNota.Left = this.Left + this.Width + menuEmergente.HorizontalOffset;
                 ventanaNota.Top = this.Top;
 
+                //ahora para cambiamos el estado de NotasAbiertas cuando se cierra
+
+                ventanaNota.Closed += (s, args) => NotasAbiertas = false;
+
                 // Mostrar la ventana
                 ventanaNota.Show();
-
+                
                 // Cerrar el menú emergente
                 menuEmergente.IsOpen = false;
             }
