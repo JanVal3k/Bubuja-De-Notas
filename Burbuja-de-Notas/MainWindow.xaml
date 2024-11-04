@@ -13,19 +13,35 @@
         MouseDown="Window_MouseDown"
         MouseMove="Window_MouseMove"
         MouseUp="Window_MouseUp">
+    <!-- Agregamos un Canvas como contenedor principal -->
+    <Canvas ClipToBounds="False">
+        <!-- El Grid contendrá tanto el botón principal como el de cerrar -->
+        <Grid Width="50" Height="50">
+            <!-- Botón circular principal -->
+            <Border CornerRadius="25">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF115F79"/>
+                        <GradientStop Color="#FF309E6E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <TextBlock 
+                    Text="≡" 
+                    FontSize="42" 
+                    Foreground="White" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Bottom"/>
+            </Border>
 
-    <Border CornerRadius="25">
-        <Border.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF115F79"/>
-                <GradientStop Color="#FF309E6E" Offset="1"/>
-            </LinearGradientBrush>
-        </Border.Background>
-        <TextBlock 
-            Text="≡" 
-            FontSize="42" 
-            Foreground="White" 
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Bottom"/>
-    </Border>
+            <!-- Botón de cerrar -->
+            <Button 
+                Style="{StaticResource EstiloBotonCerrar}"
+                Content="✕"
+                Width="16"
+                Height="16"
+                Canvas.Left="-8"
+                Canvas.Top="-8"
+                Click="BotonCerrar_Click" Margin="34,34,0,0"/>
+        </Grid>
+    </Canvas>
 </Window>
