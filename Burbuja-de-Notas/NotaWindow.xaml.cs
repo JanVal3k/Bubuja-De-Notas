@@ -14,6 +14,8 @@ namespace BurbujasDeNotas
         public NotaWindow()
         {
             InitializeComponent();
+            this.Topmost = true; // la ventana quedaria sobre todas las demas
+            this.WindowStyle = WindowStyle.None; // quita los menus predeterminados para las ventans
         }
 
         // Se ejecuta cuando se presiona el botón del mouse

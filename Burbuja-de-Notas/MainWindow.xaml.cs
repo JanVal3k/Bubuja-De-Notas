@@ -26,58 +26,69 @@ namespace BurbujasDeNotas
         // Método que crea y configura el menú emergente
         private void InicializarMenuEmergente()
         {
-            // Crear el popup con propiedades de transparencia y animación
+            // Crear el popup
             menuEmergente = new Popup
             {
-                AllowsTransparency = true,      // Permite transparencia en el popup
-                PopupAnimation = PopupAnimation.Fade  // Añade animación de fundido
+                AllowsTransparency = true,
+                PopupAnimation = PopupAnimation.Fade
             };
 
-            // Crear el contenedor principal del popup
+            // Crear el borde principal
             var bordePrincipal = new Border
             {
-                Background = new SolidColorBrush(Colors.White),  // Fondo blanco
-                CornerRadius = new CornerRadius(15),            // Esquinas redondeadas
-                BorderBrush = new SolidColorBrush(Colors.LightGray), // Color del borde
-                BorderThickness = new Thickness(1),             // Grosor del borde
-                Width = 160,                                    // Ancho fijo
-                Height = 160,                                   // Alto fijo
-                Margin = new Thickness(10)                      // Margen exterior
+                Background = new SolidColorBrush(Colors.White),
+                CornerRadius = new CornerRadius(15),
+                BorderBrush = new SolidColorBrush(Colors.LightGray),
+                BorderThickness = new Thickness(1),
+                Width = 160,
+                Height = 160,
+                Margin = new Thickness(10)
             };
 
-            // Agregar efecto de sombra al borde
+            // Agregar efecto de sombra
             bordePrincipal.Effect = new System.Windows.Media.Effects.DropShadowEffect
             {
-                BlurRadius = 10,    // Desenfoque de la sombra
-                ShadowDepth = 5,    // Profundidad de la sombra
-                Opacity = 0.3       // Transparencia de la sombra
+                BlurRadius = 10,
+                ShadowDepth = 5,
+                Opacity = 0.3
             };
 
-            // Crear grid para organizar los botones en 2x2
-            var cuadricula = new Grid();
+            // Crear el grid principal que contendrá todo
+            var gridPrincipal = new Grid();
 
-            // Configurar 2 filas y 2 columnas
+            // Crear la cuadrícula para los botones
+            var cuadriculaBotones = new Grid();
+
+            // Configurar filas y columnas
             for (int i = 0; i < 2; i++)
             {
-                cuadricula.RowDefinitions.Add(new RowDefinition());     // Añade fila
-                cuadricula.ColumnDefinitions.Add(new ColumnDefinition()); // Añade columna
+                cuadriculaBotones.RowDefinitions.Add(new RowDefinition());
+                cuadriculaBotones.ColumnDefinitions.Add(new ColumnDefinition());
             }
 
-            // Crear los botones con emojis
-            string[] opcionesMenu = { "📝", "📅", "📷", "⚙️" };  // Array de emojis para los botones
+            // Crear y agregar los botones
+            string[] opcionesMenu = { "📝", "📅", "📷", "⚙️" };
             for (int i = 0; i < 4; i++)
             {
                 var boton = CrearBotonCircular(opcionesMenu[i]);
-                Grid.SetRow(boton, i / 2);     // Calcula la fila (0 para i=0,1 y 1 para i=2,3)
-                Grid.SetColumn(boton, i % 2);   // Calcula la columna (alterna entre 0 y 1)
-                cuadricula.Children.Add(boton); // Añade el botón a la cuadrícula
+                Grid.SetRow(boton, i / 2);
+                Grid.SetColumn(boton, i % 2);
+                cuadriculaBotones.Children.Add(boton);
             }
 
-            // Ensamblar la jerarquía visual
-            bordePrincipal.Child = cuadricula;        // Añade la cuadrícula al borde
-            menuEmergente.Child = bordePrincipal;     // Añade el borde al popup
-        }
+            // Agregar todos los elementos al grid principal
+            gridPrincipal.Children.Add(cuadriculaBotones);
+        
 
+            // Ensamblar todo
+            bordePrincipal.Child = gridPrincipal;
+            menuEmergente.Child = bordePrincipal;
+        }
+        // metodo para el boton cerrar
+        private void BotonCerrar_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
         // Método para crear botones circulares 
         private Button CrearBotonCircular(string contenido)
         {
@@ -186,7 +197,7 @@ namespace BurbujasDeNotas
 
                 //ahora para cambiamos el estado de NotasAbiertas cuando se cierra
 
-                ventanaNota.Closed += (s, args) => NotasAbiertas = false;
+                ventanaNota.Closed += (s, args) => NotasAbiertas = false; // funcion lambda o de flasha en JS (nota: los argumentos son obligatorios a si no se utilicen)
 
                 // Mostrar la ventana
                 ventanaNota.Show();
