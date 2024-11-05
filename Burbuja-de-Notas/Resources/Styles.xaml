@@ -83,6 +83,23 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
-
+    <!-- Popup para colores -->
+    <Style TargetType="Popup" x:Key="ColorPickerPopup">
+        <Setter Property="IsOpen" Value="False" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="PopupAnimation" Value="Fade" />
+        <Setter Property="Placement" Value="Bottom" />
+    </Style>
+    <!-- Estilo para el boton de aplicar el color -->
+    <Style x:Key="BotonAplicarColor" TargetType="Button">
+        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="Background" Value="#FFE4B5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#FFD700"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
