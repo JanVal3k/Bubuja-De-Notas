@@ -1,4 +1,7 @@
 ﻿// NotaWindow.xaml.cs
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,6 +15,8 @@ namespace BurbujasDeNotas
         // Variables para controlar el arrastre de la ventana
         private bool estaArrastrando = false;
         private Point posicionInicial;
+        private List<Note> notas; // para listar las notas creadas
+        private string rutaDirectorio = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\BurbujasDeNotas";
 
         // Constructor
         public NotaWindow()
@@ -20,6 +25,7 @@ namespace BurbujasDeNotas
             this.Topmost = true; // la ventana quedaria sobre todas las demas
             this.WindowStyle = WindowStyle.None; // quita los menus predeterminados para las ventans
             this.ResizeMode = ResizeMode.NoResize; //Evita el cambio de tamaño de la ventana
+            CargarNotas();
         }
 
         // Se ejecuta cuando se presiona el botón del mouse
@@ -100,5 +106,67 @@ namespace BurbujasDeNotas
                 colorPickerPopup.IsOpen = false;
             }
         }
+        // Metodo para guardar notas
+        private void GuardarNotaButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            var nota = new Note
+            {
+                Color = ((SolidColorBrush)((Border)this.Content).Background).Color
+            };
+            notas.Add(nota);
+            GuardarNotas();
+            MessageBox.Show("Nota guardada correctamente.");
+        }
+        // mostrar las notas creadas
+        private void VerNotasButton_Click(object sender, RoutedEventArgs e)
+        {
+            var notasWindow = new NotaWindow();
+            notasWindow.SetNotas(notas);
+            notasWindow.Show();
+        }
+        //
+        public void SetNotas(List<Note> notas)
+        {
+            this.notas = notas;
+        }
+
+        // Cargar las notas existentes desde el directorio local
+        private void CargarNotas()
+        {
+            
+            if (!Directory.Exists(rutaDirectorio))
+                Directory.CreateDirectory(rutaDirectorio);
+
+            var archivos = Directory.GetFiles(rutaDirectorio, "*.note");
+            foreach (var archivo in archivos)
+            {
+                var color = File.ReadAllText(archivo).Split(',');
+                var nota = new Note
+                {
+                    Color = Color.FromRgb(byte.Parse(color[0]), byte.Parse(color[1]), byte.Parse(color[2]))
+                };
+                notas.Add(nota);
+            }
+        }
+        // Guardar las notas en archivos individuales en el directorio local
+        private void GuardarNotas()
+        {
+            
+            if (!Directory.Exists(rutaDirectorio))
+                Directory.CreateDirectory(rutaDirectorio);
+
+            for (int i = 0; i < notas.Count; i++)
+            {
+                var nota = notas[i];
+                var archivo = Path.Combine(rutaDirectorio, $"nota_{i}.note");
+                File.WriteAllText(archivo, $"{nota.Color.R},{nota.Color.G},{nota.Color.B}");
+            }
+        }
+        //
+    }
+    public class Note
+    {
+        public Color Color { get; set; }
     }
 }
